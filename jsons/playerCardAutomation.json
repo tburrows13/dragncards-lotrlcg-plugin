@@ -408,8 +408,7 @@
                         ],
                         [
                             ["TOGGLE_EXHAUST", "$THIS"],
-                            ["TOGGLE_EXHAUST", "$THIS.parentCard"],
-                            ["INCREASE_VAL", "/cardById/{{$THIS.parentCardId}}/tokens/resources", 2]
+                            ["INCREASE_VAL", "/cardById/{{$THIS.parentCardId}}/tokens/resource", 2]
                         ]
                     ]
                 }
