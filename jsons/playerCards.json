@@ -2154,7 +2154,86 @@
                         ]
                     }
                 }
-            }
+            },
+            "51223bd0-ffd1-11df-a976-0801211c9026": {
+                "_comment": "Warden of Healing",
+                "ability": {
+                    "A": ["COND",
+                        ["AND", 
+                            ["NOT", "$THIS.exhausted"]
+                        ],
+                        [
+                            ["TOGGLE_EXHAUST", "$THIS"],
+                            ["PROMPT", "$PLAYER_N", "wardenOfHealing"]
+                        ],
+                        ["TRUE"],
+                        ["LOG", "└── ", "The ability's conditions are not met."]
+                    ]
+                }
+            },
+            "51223bd0-ffd1-11df-a976-0801210c9005": {
+                "_comment": "Elrond's Counsel",
+                "ability": {
+                    "A": [
+                        ["LOG", "└── ", ["GET_ALIAS", "$THIS.controller"], " reduced their threat by 3."],
+                        ["DECREASE_VAL", "/playerData/{{$THIS.controller}}/threat", 3],
+                        ["DISCARD_CARD", "$THIS"],
+                        ["PROMPT", "$PLAYER_N", "elrondsCounsel"]
+                    ]
+                }
+            },
+            "a312f83c-0213-4b42-8299-0da1b510d2c3": {"_comment": "Elrond's Counsel", "inheritFrom": "51223bd0-ffd1-11df-a976-0801210c9005"},
+            "51223bd0-ffd1-11df-a976-0801210c9002": {
+                "_comment": "Arwen Undómiel (Ally)",
+                "ability": {
+                    "A": [
+                        ["PROMPT", "$PLAYER_N", "arwenUndomielAlly"]
+                    ]
+                }
+            },
+            "99832065-8c3b-44ac-ba33-876c8798eb84": {"_comment": "Arwen Undómiel (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801210c9002"},
+            "51223bd0-ffd1-11df-a976-0801200c9016": {
+                "_comment": "Snowbourn Scout",
+                "rules": {
+                    "snowbournScoutEnterPlay": { 
+                        "type": "entersPlay", 
+                        "side": "A",
+                        "then": [
+                            ["PROMPT", "$PLAYER_N", "snowbournScout"]
+                        ]
+                    }
+                }
+            },
+            "51223bd0-ffd1-11df-a976-0801200c9073": {
+                "_comment": "Gandalf (Ally)",
+                "rules": {
+                    "gandalfEnterPlay": { 
+                        "type": "entersPlay", 
+                        "side": "A",
+                        "then": [
+                            ["PROMPT", "$PLAYER_N", "gandalfAlly", "$THIS.controller"]
+                        ]
+                    },
+                    "gandalfDiscard": {
+                        "type": "trigger",
+                        "listenTo": ["/stepId"],
+                        "condition": ["AND", 
+                            ["EQUAL", "$GAME.stepId", "8.0"], 
+                            ["EQUAL", "$THIS.currentSide", "A"],
+                            ["EQUAL", "$THIS.inPlay", true]
+                        ],
+                        "then": [
+                            ["DISCARD_CARD", "$THIS"]
+                        ]
+                    }
+                }
+            },
+            "b74a01c4-3eaf-4b75-8e0b-2e882abcffbd": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "5867614b-61fc-4b7c-9a05-02c59b7cc06a": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "b3af03db-917b-4252-a30d-122f4fde7c67": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "7c7c51a4-2324-4781-ab3c-e868f08ba0f7": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "a1382bc4-8167-426a-94d6-fa4a650366ad": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "9494ffbc-509c-42b7-8060-68e16613f73d": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"}
         }
     }
 }
