@@ -472,9 +472,10 @@
                 "_comment": "Daeron's Runes",
                 "ability": {
                     "A": [
-                        ["DRAW_CARD", 2, "$THIS.controller"],
                         ["LOG", "└── ", "{{$ALIAS_N}} drew 2 cards and must now discard a card from their hand."],
-                        ["DISCARD_CARD", "$THIS"]
+                        ["DRAW_CARD", 2, "$THIS.controller"],
+                        ["MOVE_CARD", "$THIS_ID", "{{$THIS.controller}}Event", -1],
+                        ["PROMPT", "$PLAYER_N", "daeronsRunes", "$THIS", "$THIS.controller"]
                     ]
                 }
             },
@@ -2183,6 +2184,15 @@
                 }
             },
             "a312f83c-0213-4b42-8299-0da1b510d2c3": {"_comment": "Elrond's Counsel", "inheritFrom": "51223bd0-ffd1-11df-a976-0801210c9005"},
+            "51223bd0-ffd1-11df-a976-1801204c9033": {
+                "_comment": "Foe-hammer",
+                "ability": {
+                    "A": [
+                        ["PROMPT", "$PLAYER_N", "foehammer", "$THIS", "$THIS.controller"]
+                    ]
+                }
+            },
+            "71763199-7840-4fb1-a211-60ab584dc395": {"_comment": "Foe-hammer", "inheritFrom": "51223bd0-ffd1-11df-a976-1801204c9033"},
             "51223bd0-ffd1-11df-a976-0801210c9002": {
                 "_comment": "Arwen Undómiel (Ally)",
                 "ability": {
@@ -2204,6 +2214,20 @@
                     }
                 }
             },
+            "4823aae3-46ef-4a75-89f9-cbd3aa1b9015": {
+                "_comment": "Envoy of Pelargir",
+                "rules": {
+                    "snowbournScoutEnterPlay": { 
+                        "type": "entersPlay", 
+                        "side": "A",
+                        "then": [
+                            ["PROMPT", "$PLAYER_N", "envoyOfPelagir"]
+                        ]
+                    }
+                }
+            },
+            "4b76df75-5897-482d-9a05-b4f4e9d9ca1a": {"_comment": "Envoy of Pelargir", "inheritFrom": "4823aae3-46ef-4a75-89f9-cbd3aa1b9015"},
+            "a6d6d6b8-d39c-4e53-aa79-297ec9ec8012": {"_comment": "Envoy of Pelargir", "inheritFrom": "4823aae3-46ef-4a75-89f9-cbd3aa1b9015"},
             "51223bd0-ffd1-11df-a976-0801200c9073": {
                 "_comment": "Gandalf (Ally)",
                 "rules": {
