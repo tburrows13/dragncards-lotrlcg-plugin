@@ -1,0 +1,136 @@
+{
+    "prompts": {
+        "wardenOfHealing": {
+            "args": [],
+            "message": "Select 2 characters to heal.",
+            "input": {
+                "type": "selectCards",
+                "autoSubmit": {
+                    "numCards": 2,
+                    "code": [
+                        ["FOR_EACH_VAL", "$PROMPT_CARD_ID", "$PROMPT_INPUT", [
+                            ["LOG", "{{$ALIAS_N}} healed 1 damage from ", "$GAME.cardById.$PROMPT_CARD_ID.currentFace.name", " for 1."],
+                            ["HEAL", "$PROMPT_CARD_ID", 1]
+                        ]]
+                    ]
+                }
+            },
+            "options": [
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        },
+        "elrondsCounsel": {
+            "args": [],
+            "message": "Select a character to give +1 willpower.",
+            "input": {
+                "type": "selectCards",
+                "autoSubmit": {
+                    "numCards": 1,
+                    "code": [
+                        ["LOG", "{{$ALIAS_N}} gave ", "$GAME.cardById.{{$PROMPT_INPUT.[0]}}.currentFace.name", " +1 willpower until the end of the phase."],
+                        ["ADD_TEMP_TOKEN", "phase", "$PROMPT_INPUT.[0]", "willpower", 1]
+                    ]
+                }
+            },
+            "options": [
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        },
+        "arwenUndomielAlly": {
+            "args": [],
+            "message": "Select a character to give +1 defense.",
+            "input": {
+                "type": "selectCards",
+                "autoSubmit": {
+                    "numCards": 1,
+                    "code": [
+                        ["LOG", "{{$ALIAS_N}} gave ", "$GAME.cardById.{{$PROMPT_INPUT.[0]}}.currentFace.name", " +1 defense until the end of the round."],
+                        ["ADD_TEMP_TOKEN", "round", "$PROMPT_INPUT.[0]", "defense", 1]
+                    ]
+                }
+            },
+            "options": [
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        },
+        "snowbournScout": {
+            "args": [],
+            "message": "Select a location to place 1 progress on.",
+            "input": {
+                "type": "selectCards",
+                "autoSubmit": {
+                    "numCards": 1,
+                    "code": [
+                        ["LOG", "{{$ALIAS_N}} added 1 progress to ", "$GAME.cardById.{{$PROMPT_INPUT.[0]}}.currentFace.name", "."],
+                        ["INCREASE_VAL", "/cardById/{{$PROMPT_INPUT.[0]}}/tokens/progress", 1]
+                    ]
+                }
+            },
+            "options": [
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        },
+        "gandalfAlly": {
+            "args": ["$CONTROLLER"],
+            "message": "Select an option.",
+            "input": {
+                "type": "selectCards"
+            },        
+            "options": [
+                {
+                    "label": "Draw 3 cards",
+                    "hotkey": "3",
+                    "code": [
+                        ["LOG", "└── ", ["GET_ALIAS", "$CONTROLLER"], " drew 3 cards."],
+                        ["DRAW_CARD", 3, "$CONTROLLER"]
+                    ]
+                },
+                {
+                    "label": "Deal 4 damage to selected enemy",
+                    "hotkey": "4",
+                    "code": [
+                        ["COND",
+                            ["AND",
+                                ["EQUAL", ["LENGTH", "$PROMPT_INPUT"], 1],
+                                ["IS_ENEMY", "$GAME.cardById.{{$PROMPT_INPUT.[0]}}"]
+                            ],
+                            [
+                                ["LOG", "{{$ALIAS_N}} dealt 4 damage to ", "$GAME.cardById.{{$PROMPT_INPUT.[0]}}.currentFace.name", "."],
+                                ["INCREASE_VAL", "/cardById/{{$PROMPT_INPUT.[0]}}/tokens/damage", 4]        
+                            ],
+                            ["TRUE"],
+                            [
+                                ["LOG", "└── ", "An enemy must be selected."],
+                                ["PROMPT", "$PLAYER_N", "gandalfAlly", "$CONTROLLER"]
+                            ]
+                        ]
+                    ]
+                },
+                {
+                    "label": "Reduce threat by 5",
+                    "hotkey": "5",
+                    "code": [
+                        ["LOG", "└── ", ["GET_ALIAS", "$CONTROLLER"], " reduced their threat by 5."],
+                        ["DECREASE_VAL", "/playerData/{{$CONTROLLER}}/threat", 5]
+                    ]
+                },
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        }
+    }
+}
