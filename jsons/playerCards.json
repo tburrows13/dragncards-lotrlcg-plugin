@@ -473,14 +473,47 @@
                 "ability": {
                     "A": [
                         ["LOG", "└── ", "{{$ALIAS_N}} drew 2 cards and must now discard a card from their hand."],
-                        ["DRAW_CARD", 2, "$THIS.controller"],
                         ["MOVE_CARD", "$THIS_ID", "{{$THIS.controller}}Event", -1],
+                        ["DRAW_CARD", 2, "$THIS.controller"],
                         ["PROMPT", "$PLAYER_N", "daeronsRunes", "$THIS", "$THIS.controller"]
                     ]
                 }
             },
             "d8729719-5d37-48c2-9bf6-8d2c8d579901": {"_comment": "Daeron's Runes", "inheritFrom": "51223bd0-ffd1-11df-a976-0801212c9010"},
             "37863571-be66-46b1-82d3-d21f4f0e653c": {"_comment": "Daeron's Runes", "inheritFrom": "51223bd0-ffd1-11df-a976-0801212c9010"},
+            "51223bd0-ffd1-11df-a976-0801200c9024": {
+                "_comment": "Valiant Sacrifice",
+                "ability": {
+                    "A": [ // TODO add prompt when numPlayers>1 to give choice for who draws the cards
+                        ["LOG", "└── ", "{{$ALIAS_N}} drew 2 cards."],
+                        ["MOVE_CARD", "$THIS_ID", "{{$THIS.controller}}Event", -1],
+                        ["DRAW_CARD", 2, "$THIS.controller"],
+                        ["DISCARD_CARD", "$THIS"]
+                    ]
+                }
+            },
+            "81b03020-ee6b-40bd-80a3-075b680a6782": {"_comment": "Valiant Sacrifice", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9024"},
+            "3c47d373-62bc-4321-9dc1-9b86b2046f68": {
+                "_comment": "Mithrandir's Advice",
+                "ability": {
+                    "A": [
+                        ["VAR", "$LORE_HEROES", ["LENGTH",
+                            ["FILTER_CARDS", "$CARD", [
+                                "AND",
+                                    "$CARD.inPlay",
+                                    ["EQUAL", "$CARD.controller", "$THIS.controller"],
+                                    ["EQUAL", "$CARD.currentFace.sphere", "Lore"],
+                                    ["IS_HERO", "$CARD"]
+                                ]
+                            ]
+                        ]],
+                        ["LOG", "└── ", "{{$ALIAS_N}} drew {{$LORE_HEROES}} cards."],
+                        ["MOVE_CARD", "$THIS_ID", "{{$THIS.controller}}Event", -1],
+                        ["DRAW_CARD", "$LORE_HEROES", "$THIS.controller"],
+                        ["DISCARD_CARD", "$THIS"]
+                    ]
+                }
+            },
             "abebff49-8219-4ae0-bd26-266db57bdfc3": {
                 "_comment": "Elven-light",
                 "ability": {
@@ -790,6 +823,31 @@
                     ]
                 }
             },
+            "28877bba-27de-4b19-a8ab-5d557b634172": {
+                "_comment": "Pillars of the Kings",
+                "ability": {
+                    "A": [
+                        ["VAR", "$THREAT", "$GAME.playerData.{{$THIS.controller}}.threat"],
+                        ["COND",
+                            ["LESS_EQUAL", "$THREAT", 30],
+                            [
+                                ["LOG", "└── ", ["GET_ALIAS", "$THIS.controller"], " increased their threat to 40 and draws 4 cards."],
+                                ["DRAW_CARD", 4, "$THIS.controller"]
+                            ],
+                            ["LESS_THAN", "$THREAT", 40],
+                            [
+                                ["LOG", "└── ", ["GET_ALIAS", "$THIS.controller"], " increased their threat to 40 and draws a card."],
+                                ["DRAW_CARD", 1, "$THIS.controller"]
+                            ],
+                            ["TRUE"],
+                            ["LOG", "└── ", ["GET_ALIAS", "$THIS.controller"], " reduced their threat to 40."]
+                        ],
+                        ["SET", "/playerData/{{$THIS.controller}}/threat", 40],
+                        ["DISCARD_CARD", "$THIS"]
+                    ]
+                }
+            },
+            "bd400c84-4fa7-4da0-a35f-3d4331fbff74": {"_comment": "Pillars of the Kings", "inheritFrom": "28877bba-27de-4b19-a8ab-5d557b634172"},
             "51223bd0-ffd1-11df-a976-0801200c9014": {
                 "_comment": "Faramir",
                 "ability": {
@@ -1170,7 +1228,7 @@
                         "then": [
                             ["LOG", "├── ", ["GET_ALIAS", "$THIS.controller"], " draws 1 additional card from Círdan and must now discard a card just drawn."],
                             ["DRAW_CARD", 1, "$THIS.controller"],
-                            ["SET", "/cardById/$THIS_ID/targeting/{{$THIS.controller}}", true]
+                            ["PROMPT", "$PLAYER_N", "cirdan", "$THIS.controller"]
                         ]
                     }
                 }
@@ -1972,6 +2030,17 @@
                     ]
                 }
             },
+            "47750277-6869-470c-9376-7eb7f0a706f5": {
+                "_comment": "Lanwyn",
+                "ability": {
+                    "A": ["COND",
+                        "$THIS.inPlay",
+                        ["PROMPT", "$PLAYER_N", "lanwyn", "$THIS"],
+                        ["TRUE"],
+                        ["LOG", "└── ", "The ability's conditions are not met."]
+                    ]
+                }
+            },
             "parentCardGainsHeroType": {
                 "abstract": true,
                 "rules": {
@@ -2202,6 +2271,21 @@
                 }
             },
             "99832065-8c3b-44ac-ba33-876c8798eb84": {"_comment": "Arwen Undómiel (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801210c9002"},
+            "51223bd0-ffd1-11df-a976-0801200c9070": {
+                "_comment": "Protector of Lorien",
+                "ability": {
+                    "A": ["COND",
+                        ["AND",
+                            ["GREATER_THAN", "$THIS.cardIndex", 0]
+                        ],
+                        [
+                            ["PROMPT", "$PLAYER_N", "protectorOfLorien", "$GAME.cardById.{{$THIS.parentCardId}}", "$THIS.controller"]
+                        ],
+                        ["TRUE"],
+                        ["LOG", "└── ", "The ability's conditions are not met."]
+                    ]
+                }
+            },
             "51223bd0-ffd1-11df-a976-0801200c9016": {
                 "_comment": "Snowbourn Scout",
                 "rules": {
@@ -2257,7 +2341,32 @@
             "b3af03db-917b-4252-a30d-122f4fde7c67": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
             "7c7c51a4-2324-4781-ab3c-e868f08ba0f7": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
             "a1382bc4-8167-426a-94d6-fa4a650366ad": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
-            "9494ffbc-509c-42b7-8060-68e16613f73d": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"}
+            "9494ffbc-509c-42b7-8060-68e16613f73d": {"_comment": "Gandalf (Ally)", "inheritFrom": "51223bd0-ffd1-11df-a976-0801200c9073"},
+            "638638f0-8177-410a-bce8-9e2bbf5ad81f": {
+                "_comment": "Elrond (Ally)",
+                "rules": {
+                    "elrondEnterPlay": { 
+                        "type": "entersPlay", 
+                        "side": "A",
+                        "then": [
+                            ["PROMPT", "$PLAYER_N", "elrondAlly"]
+                        ]
+                    },
+                    "elrondDiscard": {
+                        "type": "trigger",
+                        "listenTo": ["/stepId"],
+                        "condition": ["AND", 
+                            ["EQUAL", "$GAME.stepId", "8.0"], 
+                            ["EQUAL", "$THIS.currentSide", "A"],
+                            ["EQUAL", "$THIS.inPlay", true]
+                        ],
+                        "then": [
+                            ["DISCARD_CARD", "$THIS"]
+                        ]
+                    }
+                }
+            },
+            "f07f5706-ac99-4aa2-8d33-ac6ab5ba6ce9": {"_comment": "Elrond (Ally)", "inheritFrom": "638638f0-8177-410a-bce8-9e2bbf5ad81f"}
         }
     }
 }
