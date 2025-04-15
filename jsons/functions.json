@@ -567,6 +567,51 @@
             ]
           ]
         },
+        "SHOW_PLAYER_DECK_3": {
+          "args": ["$PLAYER_I", "$BOOL"],
+          "code": [
+            ["COND",
+              ["IN_STRING", "$GAME.layoutId", "Handed"],
+              "$GAME",
+              "$BOOL", 
+              [
+                ["COND",
+                  "$GAME.playerData.$PLAYER_I.layout.regions.playerNDeck3.visible",
+                  ["LOG", "{{$PLAYER_I}} tried to update their layout to show their third deck but it is already visible."],
+                  ["TRUE"],
+                  [
+                    ["LOG", "{{$PLAYER_I}} updated their layout to show their third deck."],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck3/visible", true],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", 
+                      ["SUBTRACT", "$GAME.playerData.$PLAYER_I.layout.regions.playerNHand.width", 0.095]],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck/left", 
+                      ["SUBTRACT", "$GAME.playerData.$PLAYER_I.layout.regions.playerNDeck.left", 0.095]],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", 
+                      ["SUBTRACT", "$GAME.playerData.$PLAYER_I.layout.regions.playerNDiscard.left", 0.095]]
+                  ]
+                ]
+              ],
+              ["TRUE"],
+              [
+                ["COND",
+                  "$GAME.playerData.$PLAYER_I.layout.regions.playerNDeck3.visible",
+                  [
+                    ["LOG", "{{$PLAYER_I}} updated their layout to hide their third deck."],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck3/visible", false],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNHand/width", 
+                      ["ADD", "$GAME.playerData.$PLAYER_I.layout.regions.playerNHand.width", 0.095]],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDeck/left", 
+                      ["ADD", "$GAME.playerData.$PLAYER_I.layout.regions.playerNDeck.left", 0.095]],
+                    ["SET", "/playerData/$PLAYER_I/layout/regions/playerNDiscard/left", 
+                      ["ADD", "$GAME.playerData.$PLAYER_I.layout.regions.playerNDiscard.left", 0.095]]
+                  ],
+                  ["TRUE"],
+                  ["LOG", "{{$PLAYER_I}} tried to update their layout to hide their third deck but it is already hidden."]
+                ]
+              ]
+            ]
+          ]
+        },
         "SHOW_ENCOUNTER_DECK_2": {
           "args": ["$BOOL"],
           "code": [
@@ -912,6 +957,15 @@
               ["EQUAL", "$CARD.currentFace.type", "Enemy"],
               ["EQUAL", "$CARD.currentFace.type", "Ship-Enemy"],
               ["EQUAL", "$CARD.currentFace.type", "Ship Enemy"]
+            ]
+          ]
+        },
+        "IS_LOCATION": {
+          "args": ["$CARD"],
+          "code": ["AND",
+            ["EQUAL", "$CARD.cardIndex", 0],
+            ["OR",
+              ["EQUAL", "$CARD.currentFace.type", "Location"]
             ]
           ]
         }

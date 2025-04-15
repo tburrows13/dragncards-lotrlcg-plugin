@@ -273,6 +273,16 @@
                 "discardGroupId": "player1Discard"
             }
         },
+        "player1Deck3": {
+            "groupType": "deck",
+            "label": "id:player1Deck3", 
+            "tableLabel": "id:player1Deck3",
+            "onCardEnter": {
+                "controller": "player1",
+                "deckGroupId": "player1Deck3",
+                "discardGroupId": "player1Discard"
+            }
+        },
         "player1Play1": {
             "groupType": "inPlay",
             "label": "id:player1Play1", 
@@ -372,6 +382,16 @@
             "onCardEnter": {
                 "controller": "player2",
                 "deckGroupId": "player2Deck2",
+                "discardGroupId": "player2Discard"
+            }
+        },
+        "player2Deck3": {
+            "groupType": "deck",
+            "label": "id:player2Deck3", 
+            "tableLabel": "id:player2Deck3",
+            "onCardEnter": {
+                "controller": "player2",
+                "deckGroupId": "player2Deck3",
                 "discardGroupId": "player2Discard"
             }
         },
@@ -477,6 +497,16 @@
                 "discardGroupId": "player3Discard"
             }
         },
+        "player3Deck3": {
+            "groupType": "deck",
+            "label": "id:player3Deck3", 
+            "tableLabel": "id:player3Deck3",
+            "onCardEnter": {
+                "controller": "player3",
+                "deckGroupId": "player3Deck3",
+                "discardGroupId": "player3Discard"
+            }
+        },
         "player3Play1": {
             "groupType": "inPlay",
             "label": "id:player3Play1", 
@@ -576,6 +606,16 @@
             "onCardEnter": {
                 "controller": "player4",
                 "deckGroupId": "player4Deck2",
+                "discardGroupId": "player4Discard"
+            }
+        },
+        "player4Deck3": {
+            "groupType": "deck",
+            "label": "id:player4Deck3", 
+            "tableLabel": "id:player4Deck3",
+            "onCardEnter": {
+                "controller": "player4",
+                "deckGroupId": "player4Deck3",
                 "discardGroupId": "player4Discard"
             }
         },

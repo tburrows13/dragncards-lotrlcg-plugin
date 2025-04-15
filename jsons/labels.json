@@ -3856,6 +3856,42 @@
             "German": "Spieler 4 Deck 2",
             "Chinese": "玩家 4 第二牌库"
         },
+        "player1Deck3": {
+            "English": "Player 1 Deck 3",
+            "French": "Deck 3 du Joueur 1",
+            "Spanish": "Mazo 3 del Jugador 1",
+            "Portuguese": "Baralho 3 do Jogador 1",
+            "Italian": "Mazzo 3 del Giocatore 1",
+            "German": "Spieler 1 Deck 3",
+            "Chinese": "玩家 1 第二牌库"
+        },
+        "player2Deck3": {
+            "English": "Player 2 Deck 3",
+            "French": "Deck 3 du Joueur 2",
+            "Spanish": "Mazo 3 del Jugador 2",
+            "Portuguese": "Baralho 3 do Jogador 2",
+            "Italian": "Mazzo 3 del Giocatore 2",
+            "German": "Spieler 2 Deck 3",
+            "Chinese": "玩家 2 第二牌库"
+        },
+        "player3Deck3": {
+            "English": "Player 3 Deck 3",
+            "French": "Deck 3 du Joueur 3",
+            "Spanish": "Mazo 3 del Jugador 3",
+            "Portuguese": "Baralho 3 do Jogador 3",
+            "Italian": "Mazzo 3 del Giocatore 3",
+            "German": "Spieler 3 Deck 3",
+            "Chinese": "玩家 3 第二牌库"
+        },
+        "player4Deck3": {
+            "English": "Player 4 Deck 3",
+            "French": "Deck 3 du Joueur 4",
+            "Spanish": "Mazo 3 del Jugador 4",
+            "Portuguese": "Baralho 3 do Jogador 4",
+            "Italian": "Mazzo 3 del Giocatore 4",
+            "German": "Spieler 4 Deck 3",
+            "Chinese": "玩家 4 第二牌库"
+        },
         "exhaustReady": {
             "English": "Exhaust/Ready",
             "French": "Incliner/Redresser",

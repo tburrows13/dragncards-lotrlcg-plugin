@@ -1,0 +1,42 @@
+{
+    "prompts": {
+        "burglarsTurnSetup": {
+            "args": ["$THIS"],
+            "message": "Press Setup to prepare your loot deck.",
+            "options": [
+                {
+                    "label": "Setup",
+                    "hotkey": "S",
+                    "code": [
+                        ["LOG", "Performing Burglar's Turn setup for ", ["GET_ALIAS", "$PLAYER_N"], "."],
+                        ["VAR", "$ATTACHMENTS", ["FILTER_CARDS", "$CARD", 
+                            ["AND",
+                                ["EQUAL", "$CARD.groupId", "{{$PLAYER_N}}Sideboard"],
+                                ["EQUAL", "$CARD.currentFace.type", "Attachment"]
+                            ]
+                        ]],
+                        ["COND",
+                            ["EQUAL", ["LENGTH", "$ATTACHMENTS"], 14],
+                            [
+                                ["LOG", "└── ", "Loot deck created."],
+                                ["FOR_EACH_VAL", "$CARD", "$ATTACHMENTS", [
+                                    ["MOVE_CARD", "$CARD.id", "{{$PLAYER_N}}Deck3", 0]
+                                ]],
+                                ["SHUFFLE_GROUP", "{{$PLAYER_N}}Deck3"],
+                                ["SET", "/cardById/$THIS.id/currentSide", "B"]    
+                            ],
+                            true,
+                            ["LOG", "└── ", "Expected 14 attachments in sideboard, found ", ["LENGTH", "$ATTACHMENTS"], " instead. Loot deck must be set up manually."]
+                        ],
+                        ["SHOW_PLAYER_DECK_3", "$PLAYER_N", true],
+                        ["SET", "/groupById/{{$PLAYER_N}}Deck3/tableLabel", "Loot Deck"]
+                    ]
+                },
+                {
+                    "label": "Cancel",
+                    "hotkey": "X"
+                }
+            ]
+        }
+    }
+}

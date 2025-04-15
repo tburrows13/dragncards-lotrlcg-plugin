@@ -2175,6 +2175,90 @@
                         ]
                     }
                 }
+            },
+            "e91aae6d-3708-4580-8598-9ccceb213839": {
+                "_comment": "Burglar's Turn",
+                "rules": {
+                    "burglarsTurnSetup": {
+                        "type": "entersPlay",
+                        "side": "A",
+                        "then": ["PROMPT", "$THIS.controller", "burglarsTurnSetup", "$THIS"]
+                    },
+                    "burglarsTurnActiveLocation": {
+                        "_comment": "Add/remove quest points on locations when they become the active location.",
+                        "type": "passive",
+                        "side": "B",
+                        "listenTo": ["/cardById/*/groupId", "/cardById/*/cardIndex"],
+                        "condition": ["AND",
+                            "$TARGET.inPlay",
+                            ["EQUAL", "$TARGET.groupId", "sharedActiveLocation"],
+                            ["IS_LOCATION", "$TARGET"],
+                            ["NOT", "$TARGET.currentFace.tags.immuneToPlayerCardEffects"]
+                        ],
+                        "onDo": [
+                            ["VAR", "$ATTACHMENTS", ["LENGTH",
+                                ["FILTER_CARDS", "$CARD", [
+                                    "AND",
+                                        "$CARD.inPlay",
+                                        ["GREATER_THAN", "$CARD.cardIndex", 0],
+                                        ["EQUAL", "$TARGET.id", "$CARD.parentCardId"]
+                                    ]
+                                ]
+                            ]],
+                            ["LOG", "└── ", "Burglar's Turn added ", "$ATTACHMENTS", " quest points to ", "$TARGET.currentFace.name", "."],
+                            ["INCREASE_VAL", "/cardById/$TARGET_ID/tokens/questPoints", "$ATTACHMENTS"]
+                        ],
+                        "offDo": [
+                            "COND",
+                            "$TARGET.inPlay",
+                            [
+                                ["VAR", "$ATTACHMENTS", ["LENGTH",
+                                    ["FILTER_CARDS", "$CARD", [
+                                        "AND",
+                                            "$CARD.inPlay",
+                                            ["GREATER_THAN", "$CARD.cardIndex", 0],
+                                            ["EQUAL", "$TARGET.id", "$CARD.parentCardId"]
+                                        ]
+                                    ]
+                                ]],
+                                ["LOG", "└── ", "Burglar's Turn removed ", "$ATTACHMENTS", " quest points from ", "$TARGET.currentFace.name", "."],
+                                ["DECREASE_VAL", "/cardById/$TARGET_ID/tokens/questPoints", "$ATTACHMENTS"]
+                            ]
+                        ]
+                    },
+                    "burglarsTurnAttachToActiveLocation": {
+                        "_comment": "Add/remove quest points on active location when attachments are added/removed.",
+                        "type": "passive",
+                        "side": "B",
+                        "listenTo": ["/cardById/*/cardIndex"],
+                        "condition": ["AND",
+                            "$TARGET.inPlay",
+                            ["EQUAL", "$TARGET.groupId", "sharedActiveLocation"],
+                            ["GREATER_THAN", "$TARGET.cardIndex", 0],
+                            ["NOT", "$GAME.cardById.{{$TARGET.parentCardId}}.currentFace.tags.immuneToPlayerCardEffects"]
+                        ],
+                        "onDo": [
+                            ["VAR", "$ACTIVE_LOCATION", "$GAME.cardById.{{$TARGET.parentCardId}}"],
+                            ["COND",
+                                ["EQUAL", ["PREV", "$GAME.cardById.{{$TARGET.parentCardId}}                  .groupId"], "sharedActiveLocation"],
+                                [
+                                    ["LOG", "└── ", "Burglar's Turn added 1 quest point to ", "$ACTIVE_LOCATION.currentFace.name", "."],
+                                    ["INCREASE_VAL", "/cardById/$ACTIVE_LOCATION.id/tokens/questPoints", 1]
+                                ]
+                            ]
+                        ],
+                        "offDo": [
+                            ["VAR", "$ACTIVE_LOCATION", ["PREV", "$GAME.cardById.{{$TARGET.parentCardId}}"]],
+                            ["COND",
+                                ["EQUAL", "$ACTIVE_LOCATION.groupId", "sharedActiveLocation"],
+                                [
+                                    ["LOG", "└── ", "Burglar's Turn removed 1 quest point from ", "$ACTIVE_LOCATION.currentFace.name", "."],
+                                    ["DECREASE_VAL", "/cardById/$ACTIVE_LOCATION.id/tokens/questPoints", 1]        
+                                ]
+                            ]
+                        ]
+                    }
+                }
             }
         }
     }
